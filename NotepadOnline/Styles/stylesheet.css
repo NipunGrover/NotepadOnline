@@ -1,0 +1,63 @@
+﻿body {
+    background-color: #F5F5F5;
+}
+
+input {
+    font-family: verdana;
+    border:1px solid #333333
+}
+
+h1 {
+    color: #333333;
+    font-family: verdana;
+    font-size: 300%;
+    text-align: center;
+    white-space: nowrap;
+}
+
+form {
+    background-color: #F5F5F5;
+    padding: 20px;
+    box-sizing: border-box;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+
+form input{
+    border: 1px solid #333333;
+    color: #333333; /* Text color inside the form */
+    padding: 5px;
+    margin: 10px;
+}
+
+
+form label {
+    color: #333333; /* Text color inside the form */
+    padding: 5px;
+}
+
+#TextEditingBox {
+    width: 900px;
+    height: 300px;
+    resize: none;
+}
+
+#SaveButton:hover, #SaveAsButton:hover {
+    background-color: #666666;
+    color: #fff;
+}
+
+#SaveButton, #SaveAsButton[disabled="disabled"] {
+    opacity: 0.5; /* Adjust the opacity to your preference */
+    cursor: not-allowed;
+}
+
+#SaveButton:enabled, #SaveAsButton:enabled {
+    opacity: 1;
+    cursor: pointer; /* or the default cursor value for your design */
+}
+
