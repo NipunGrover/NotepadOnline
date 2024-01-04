@@ -40,7 +40,7 @@ form label {
     padding: 5px;
 }
 
-#TextEditingBox {
+#TextEditor {
     width: 900px;
     height: 300px;
     resize: none;
@@ -51,7 +51,7 @@ form label {
     color: #fff;
 }
 
-#SaveButton, #SaveAsButton[disabled="disabled"] {
+#SaveButton:disabled, #SaveAsButton:disabled {
     opacity: 0.5; /* Adjust the opacity to your preference */
     cursor: not-allowed;
 }

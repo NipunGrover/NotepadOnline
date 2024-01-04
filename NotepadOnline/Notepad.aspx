@@ -12,10 +12,18 @@
 
 </head>
 <body>
+    <h1>Notepad Online</h1> 
     <form id="form1" runat="server" onsubmit="return false">
-
-         <textarea id="TextEditor" cols="20" rows="2"></textarea>
-         <div id="errorMessage"></div>
+            
+        
+         <asp:button ID="SaveButton" runat="server" Text="Save" Enabled="false" />
+        
+        <asp:button ID="SaveAsButton" runat="server" Text="Save As" ValidationGroup="SaveAsGroup"/>
+        <asp:RequiredFieldValidator ValidationGroup="SaveAsGroup" ID="fileNameValidator" runat="server" ErrorMessage="RequiredFieldValidator" Text="File name cannot be BLANK." ControlToValidate="fileName"></asp:RequiredFieldValidator>
+        <input id="fileName" type="text" runat="server" />
+         
+        <textarea id="TextEditor" ></textarea>
+        <div id="SaveStatus"></div>
 
 
     </form>
