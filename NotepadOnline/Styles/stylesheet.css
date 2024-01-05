@@ -52,12 +52,19 @@ form label {
 }
 
 #SaveButton:disabled, #SaveAsButton:disabled {
-    opacity: 0.5; /* Adjust the opacity to your preference */
+    opacity: 1; /* Adjust the opacity to your preference */
     cursor: not-allowed;
+    background-color: transparent;
 }
 
 #SaveButton:enabled, #SaveAsButton:enabled {
     opacity: 1;
     cursor: pointer; /* or the default cursor value for your design */
+}
+
+#form1 {
+    background-color: lightgrey;
+    margin-top: 5px;
+    padding-top: 0px;
 }
 

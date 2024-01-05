@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notepad.aspx.cs" Inherits="NotepdOnline.WebForm1" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Notepad.aspx.cs" Inherits="NotepadOnline.WebForm1" %>
 
 <!DOCTYPE html>
 
@@ -8,6 +8,10 @@
     <meta charset="UTF-8" name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="Styles/stylesheet.css"/>
 
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type = "text/javascript" src = "JavaScript.js"></script> 
+
     <title>Notepad Online</title>
 
 </head>
@@ -15,17 +19,21 @@
     <h1>Notepad Online</h1> 
     <form id="form1" runat="server" onsubmit="return false">
             
+        <label for="FilesList">Select a file:</label>
+        <asp:DropDownList ID="FilesList" runat="server" />
+        <asp:button ID="SaveButton" runat="server" Text="Save" Enabled="false" />
         
-         <asp:button ID="SaveButton" runat="server" Text="Save" Enabled="false" />
-        
-        <asp:button ID="SaveAsButton" runat="server" Text="Save As" ValidationGroup="SaveAsGroup"/>
-        <asp:RequiredFieldValidator ValidationGroup="SaveAsGroup" ID="fileNameValidator" runat="server" ErrorMessage="RequiredFieldValidator" Text="File name cannot be BLANK." ControlToValidate="fileName"></asp:RequiredFieldValidator>
-        <input id="fileName" type="text" runat="server" />
+        <asp:Button ID="SaveAsButton" runat="server" Text="Save As" ValidationGroup="SaveAsGroup"/>
+        <asp:RequiredFieldValidator ValidationGroup="SaveAsGroup" ID="fileNameValidator" runat="server" ErrorMessage="RequiredFieldValidator" Text="File name cannot be BLANK." ControlToValidate="FileName"></asp:RequiredFieldValidator>
+        <input id="FileName" type="text" runat="server" />
          
         <textarea id="TextEditor" ></textarea>
-        <div id="SaveStatus"></div>
+ 
 
 
     </form>
+
+    <div id="SaveStatus"></div>
+
 </body>
 </html>
