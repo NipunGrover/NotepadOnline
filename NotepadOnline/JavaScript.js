@@ -7,6 +7,7 @@ $(document).ready(function () {
     // setting ajax handlers
     $("#SaveButton").click(Save);
     $("#SaveAsButton").click(SaveAs);
+    $("#FilesList").Change(OpenFile);
 
     //whenever there is a change in the text box, enable the save button
     $('#TextEditor').on('input change', function (e) {
@@ -117,4 +118,58 @@ function SaveAs() {
         }
 
     });
+
+
+    /*
+Name    :   OpenFile
+Purpose :   Load the content of a selected file using AJAX.
+Inputs  :   None
+Outputs :   Displays the loaded file's content and status on the page.
+Returns :   None
+*/
+    function OpenFile() {
+
+        // Get the select element
+        let dropdown = document.getElementById("FilesList");
+
+        //get the text associated with selected element
+        let selectedFile = dropdown.options[dropdown.selectedIndex].text;
+
+
+        // clearing ui if user chooses empty value for file
+        if (selectedFile.trim() === "") {
+            document.getElementById("SaveStatus").innerHTML = "";
+            document.getElementById("TextEditor").value = "";
+            return;
+        }
+
+        let jsonData = { fileToLoad: selectedFile };
+        let jsonString = JSON.stringify(jsonData);
+
+        jQueryXMLHttpRequest = $.ajax({
+            type: "POST",
+            url: "startPage.aspx/OpenFile",         // sending data to appropriate method
+            data: jsonString,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data != null && data.d != null) {
+                    var response;
+                    // updating text box with data received in response
+                    response = $.parseJSON(data.d);
+
+                    document.getElementById("TextEditor").value = response.description;
+
+                    document.getElementById("SaveStatus").innerHTML = "File loading status : <b>" + response.status + "</b>";
+
+
+                }
+            },
+            fail: function () {
+                document.getElementById("SaveStatus").innerHTML = "The call to the WebMethod failed!";
+            }
+
+        });
+
+    }
 }

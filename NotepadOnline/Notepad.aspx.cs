@@ -12,7 +12,7 @@ using System.Web.UI.WebControls;
 
 namespace NotepadOnline
 {
-    public partial class WebForm1 : System.Web.UI.Page
+    public partial class Notepad : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -98,6 +98,40 @@ namespace NotepadOnline
             return returnData;
 
         }
+
+        [WebMethod]
+
+        public static string OpenFile(string fileToLoad)
+        {
+            string returnData = "";
+            string openStatus;
+            string fileContents = "";
+
+            try
+            {
+                //building file path, mappath is used to get the physical path of the directory Files
+                string path = HttpContext.Current.Server.MapPath("Files");
+                path = path + @"\" + fileToLoad;
+
+                if (File.Exists(path))
+                {
+                    openStatus = "Success";
+                    fileContents = File.ReadAllText(path);
+                }
+                else
+                {
+                    openStatus = "Failure";
+                    fileContents = "File doesn't exist";
+                }
+            }
+
+            catch (Exception e)
+            {
+                openStatus = "Exception" + e;
+            }
+            return returnData;
+        }
+
 
     }
 

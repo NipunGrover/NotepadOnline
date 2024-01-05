@@ -11,7 +11,7 @@ namespace NotepadOnline
 {
 
 
-    public partial class WebForm1
+    public partial class Notepad
     {
 
         /// <summary>
