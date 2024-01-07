@@ -113,6 +113,8 @@ function SaveAs() {
                 document.getElementById("SaveStatus").innerHTML = "File saving as status : <b>" + response.status + "</b>";
 
                 $('#SaveButton').prop('disabled', true);
+
+                PopulateFileList();
             }
 
         },
