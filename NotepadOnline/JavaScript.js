@@ -78,7 +78,7 @@ Inputs  :   None
 Outputs :   Displays the status of the save as operation on the page.
 Returns :   None
 */
-function SaveAs() {
+function SaveAs(overwrite = false) {
     // retrieving file name and text for file
     var selectedFile = document.getElementById("FileName").value;
 
@@ -87,9 +87,10 @@ function SaveAs() {
     var contentToSave = document.getElementById("TextEditor").value;
 
     // constructin json string to send for ajax query
-    var jsonData = { fileName: selectedFile, fileContent: contentToSave };
+    var jsonData = { fileName: selectedFile, fileContent: contentToSave, overwrite: overwrite };
     var jsonString = JSON.stringify(jsonData);
 
+  
 
     jQueryXMLHttpRequest = $.ajax({
         type: "POST",
@@ -104,12 +105,39 @@ function SaveAs() {
 
                 response = $.parseJSON(data.d);
 
-                document.getElementById("SaveStatus").innerHTML = "File saving as status : <b>" + response.status + "</b>";
+                if (response.status === "File Exists") {
+                    var overwrite = confirm("File already exists. Do you want to overwrite it?");
+                    if (overwrite === false) {
+                        document.getElementById("SaveStatus").innerHTML = "File save status : <b>File not saved</b>";
+                        return;
 
-                $('#SaveButton').prop('disabled', true);
+                    }
+                    else if (overwrite === true)
+                    {
+                        document.getElementById("SaveStatus").innerHTML = "File save status : <b>" + "File Overwritten" + "</b>";
 
-                //updating the dropdown list
-                PopulateFileList();
+                        //call the save function with true parameter to write data to the file
+                        SaveAs(true);
+
+                        //disabling the save button because the file has been saved
+                        $('#SaveButton').prop('disabled', true);
+                    }
+
+                }
+                else {
+                    //if the Save as button was calld with true parameter, then we dont want to display the status like this
+                    if (overwrite == false)
+                    { 
+                    document.getElementById("SaveStatus").innerHTML = "File save status : <b>" + response.status + "</b>";
+                    }
+
+                    // disabling the save button because the file has been saved
+                    $('#SaveButton').prop('disabled', true);
+
+                    //updating the dropdown list
+                    PopulateFileList();
+                }
+            
             }
 
         },
@@ -144,11 +172,13 @@ function validateFileName() {
 
 
     
-/*Name    :   OpenFile
+/*
+Name    :   OpenFile
 Purpose :   Load the content of a selected file using AJAX.
 Inputs  :   None
 Outputs :   Displays the loaded file's content and status on the page.
-Returns :   None*/
+Returns :   None
+*/
 
 function OpenFile() {
 
@@ -194,6 +224,8 @@ function OpenFile() {
 
     });
 }//fn OpenFile ends here
+
+
 
 function PopulateFileList() {
 

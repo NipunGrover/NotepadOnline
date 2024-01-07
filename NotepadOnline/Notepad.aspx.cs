@@ -59,7 +59,7 @@ namespace NotepadOnline
 
 
         [WebMethod]
-        public static string SaveAs(string fileName, string fileContent)
+        public static string SaveAs(string fileName, string fileContent, bool overwrite = false)
         {
             string returnData;
             string saveStatus;
@@ -71,14 +71,18 @@ namespace NotepadOnline
                 path = path + @"\" + fileName + ".txt";
 
 
-                if (!File.Exists(path))
+                if (!File.Exists(path) || overwrite == true)
                 {
                     saveStatus = "Success";
 
                     //writing content to the file
                     File.WriteAllText(path, fileContent);
                 }
-                else
+                else if (File.Exists(path))
+                {
+                    saveStatus = "File Exists";
+                }
+                else 
                 {
                     saveStatus = "Failure";
                 }

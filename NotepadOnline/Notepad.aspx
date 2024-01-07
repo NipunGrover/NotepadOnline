@@ -30,9 +30,11 @@
          
         <textarea id="TextEditor" ></textarea>
 
+         <div id="SaveStatus"></div>
+
     </form>
 
-    <div id="SaveStatus"></div>
+ 
 
 </body>
 </html>
