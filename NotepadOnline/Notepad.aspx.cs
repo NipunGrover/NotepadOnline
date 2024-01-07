@@ -31,7 +31,7 @@ namespace NotepadOnline
             {
                 //building file path, mappath is used to get the physical path of the directory Files
                 string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileName;
+                path = path + @"\" + fileName + ".txt";
 
 
                 if (File.Exists(path))
@@ -144,7 +144,7 @@ namespace NotepadOnline
 
             foreach (string file in files)
             {
-                filesList.Add(Path.GetFileName(file));
+                filesList.Add(Path.GetFileNameWithoutExtension(file));
             }
 
 
