@@ -114,6 +114,7 @@ function SaveAs() {
 
                 $('#SaveButton').prop('disabled', true);
 
+                //updating the dropdown list
                 PopulateFileList();
             }
 

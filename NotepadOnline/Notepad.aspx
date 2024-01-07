@@ -25,12 +25,10 @@
         
         <asp:Button ID="SaveAsButton" runat="server" Text="Save As"/>
         <input id="FileName" type="text" runat="server" />
-        <asp:RequiredFieldValidator ValidationGroup="SaveAsGroup" ID="fileNameValidator" runat="server" ErrorMessage="RequiredFieldValidator" Text="File name cannot be BLANK." ControlToValidate="FileName"></asp:RequiredFieldValidator>
+        
         
          
         <textarea id="TextEditor" ></textarea>
- 
-
 
     </form>
 
