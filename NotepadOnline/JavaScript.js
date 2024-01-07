@@ -7,11 +7,12 @@ $(document).ready(function () {
     // setting ajax handlers
     $("#SaveButton").click(Save);
     $("#SaveAsButton").click(SaveAs);
-/*    $("#FilesList").Change(OpenFile);*/
+    $("#FilesList").change(OpenFile);
+
+    PopulateFileList();
 
     //whenever there is a change in the text box, enable the save button
     $('#TextEditor').on('input change', function (e) {
-        console.log('TextEditor input or change event triggered');
         $('#SaveButton').prop('disabled', false);
         /*we are keeping the save as button enabled at all times because it is not a destructive action and one can save as many times as they want 
           and it is also possible to save blank files. All in all it is not bound to changes in the text area */
@@ -33,7 +34,7 @@ function Save()
 
     //get the name for the file from the dropdown list
     let selectedFile = dropdown.options[dropdown.selectedIndex].text;
-    let contentToSave = document.getElementById("TextEditingBox").value;
+    let contentToSave = document.getElementById("TextEditor").value;
 
 
     //checking if no file was selected
@@ -145,57 +146,102 @@ function validateFileName() {
 
 
 
-    /*
-Name    :   OpenFile
+    
+/*Name    :   OpenFile
 Purpose :   Load the content of a selected file using AJAX.
 Inputs  :   None
 Outputs :   Displays the loaded file's content and status on the page.
-Returns :   None
-*/
-/*    function OpenFile() {
+Returns :   None*/
 
-        // Get the select element
-        let dropdown = document.getElementById("FilesList");
+function OpenFile() {
 
-        //get the text associated with selected element
-        let selectedFile = dropdown.options[dropdown.selectedIndex].text;
+    // Get the select element
+    let dropdown = document.getElementById("FilesList");
+
+    //get the text associated with selected element
+    let selectedFile = dropdown.options[dropdown.selectedIndex].text;
 
 
-        // clearing ui if user chooses empty value for file
-        if (selectedFile.trim() === "") {
-            document.getElementById("SaveStatus").innerHTML = "";
-            document.getElementById("TextEditor").value = "";
-            return;
+    // clearing ui if user chooses empty value for file
+    if (selectedFile.trim() === "") {
+        document.getElementById("SaveStatus").innerHTML = "";
+        document.getElementById("TextEditor").value = "";
+        return;
+    }
+
+    let jsonData = { fileToLoad: selectedFile };
+    let jsonString = JSON.stringify(jsonData);
+
+    jQueryXMLHttpRequest = $.ajax({
+        type: "POST",
+        url: "Notepad.aspx/OpenFile",         // sending data to appropriate method
+        data: jsonString,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            if (data != null && data.d != null) {
+                var response;
+                // updating text box with data received in response
+                response = $.parseJSON(data.d);
+
+                document.getElementById("TextEditor").value = response.description;
+
+                document.getElementById("SaveStatus").innerHTML = "File loading status : <b>" + response.status + "</b>";
+
+
+            }
+        },
+        fail: function () {
+            document.getElementById("SaveStatus").innerHTML = "The call to the WebMethod failed!";
         }
 
-        let jsonData = { fileToLoad: selectedFile };
-        let jsonString = JSON.stringify(jsonData);
+    });
+}//fn OpenFile ends here
 
-        jQueryXMLHttpRequest = $.ajax({
-            type: "POST",
-            url: "startPage.aspx/OpenFile",         // sending data to appropriate method
-            data: jsonString,
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                if (data != null && data.d != null) {
-                    var response;
-                    // updating text box with data received in response
-                    response = $.parseJSON(data.d);
+function PopulateFileList() {
 
-                    document.getElementById("TextEditor").value = response.description;
+    var dropdown = document.getElementById("FilesList");
 
-                    document.getElementById("SaveStatus").innerHTML = "File loading status : <b>" + response.status + "</b>";
+    jQueryXMLHttpRequest = $.ajax({
+        type: "POST",
+        url: "Notepad.aspx/PopulateFileList",
+        data: null,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            if (data != null && data.d != null) {
+                var response;
 
+                response = $.parseJSON(data.d);
+                $("#FilesList").empty();
+                // adding an empty option for files
+                var emptyOption = document.createElement('option');
+                emptyOption.text = "Select a file";
+                emptyOption.value = "";
+                dropdown.add(emptyOption);
 
-                }
-            },
-            fail: function () {
-                document.getElementById("SaveStatus").innerHTML = "The call to the WebMethod failed!";
+                $.each(response.fileNames, function (index, value) {
+                    var option = document.createElement('option');
+                    option.value = index;
+                    option.text = value;
+
+                    // Appending the option to the DropDownList
+                    dropdown.add(option);
+                });
+
+                dropdown.onchange = function () {
+                    // If the "Select a file" option is still present, remove it
+                    if (this.options[0].value === "") {
+                        this.remove(0);
+                    }
+                };
             }
 
-        });
-*/
 
+        },
+        fail: function () {
+            document.getElementById("statusMessage").innerHTML = "The call to the WebMethod failed!";
+        }
 
-
+    });
+}

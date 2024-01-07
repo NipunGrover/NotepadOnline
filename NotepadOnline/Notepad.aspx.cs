@@ -22,21 +22,16 @@ namespace NotepadOnline
 
 
         [WebMethod]
-
-
         public static string SaveFile(string fileName, string fileContent)
         {
-            string returnData = "";
+            string returnData;
             string saveStatus;
 
-         
-
-          
             try
             {
                 //building file path, mappath is used to get the physical path of the directory Files
                 string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileName;
+                path = path + @"\" + fileName + ".txt";
 
 
                 if (File.Exists(path))
@@ -73,7 +68,7 @@ namespace NotepadOnline
             {
                 //building file path, mappath is used to get the physical path of the directory Files
                 string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileName;
+                path = path + @"\" + fileName + ".txt";
 
 
                 if (!File.Exists(path))
@@ -100,7 +95,6 @@ namespace NotepadOnline
         }
 
         [WebMethod]
-
         public static string OpenFile(string fileToLoad)
         {
             string returnData = "";
@@ -133,6 +127,31 @@ namespace NotepadOnline
         }
 
 
+
+
+        [WebMethod]
+        public static string PopulateFileList()
+        {
+            // building the path for "MyFiles" directory present in solution
+            string currentDirectory = HttpContext.Current.Server.MapPath("Files");
+            string path = Path.Combine(currentDirectory);
+
+            // getting all of the files from path
+            string[] files = Directory.GetFiles(path);
+
+            // populating list with name of every file in path
+            List<string> filesList = new List<string>();
+
+            foreach (string file in files)
+            {
+                filesList.Add(Path.GetFileName(file));
+            }
+
+
+            // sending response for the ajax call
+            string returnData = JsonConvert.SerializeObject(new { fileNames = filesList });
+            return returnData;
+        }
     }
 
     /*three basic main elements needed are save, save and open file. save save as will be done first, */
