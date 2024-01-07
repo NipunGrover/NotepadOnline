@@ -82,12 +82,6 @@ function SaveAs() {
     // retrieving file name and text for file
     var selectedFile = document.getElementById("FileName").value;
 
-    if (selectedFile.trim() === "") {
-        document.getElementById("SaveStatus").innerHTML = "";
-        Page_ClientValidate();
-        return;
-    }
-
     if (validateFileName() === false) { return; }
 
     var contentToSave = document.getElementById("TextEditor").value;
