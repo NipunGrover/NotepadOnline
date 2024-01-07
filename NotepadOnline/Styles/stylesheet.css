@@ -81,5 +81,10 @@ form label {
 #FilesList {
     border: 1px solid #000; 
     width: 200px; 
+    border-radius: 5px;
+}
+
+#FileName {
+    border-radius: 5px;
 }
 
