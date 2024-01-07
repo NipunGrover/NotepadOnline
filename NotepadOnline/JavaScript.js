@@ -160,7 +160,7 @@ function validateFileName() {
     }
 
     // Check if the file name contains special characters
-    var regex = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+    var regex = /[!@$%^&*_+\-=\[\]{};':"\\|,.<>\/?]+/;
     if (regex.test(fileName)) {
         alert('File name cannot contain special characters.');
         return false;
