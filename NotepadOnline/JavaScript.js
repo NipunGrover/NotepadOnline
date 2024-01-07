@@ -240,7 +240,7 @@ function PopulateFileList() {
 
         },
         fail: function () {
-            document.getElementById("statusMessage").innerHTML = "The call to the WebMethod failed!";
+            document.getElementById("SaveStatus").innerHTML = "The call to the WebMethod failed!";
         }
 
     });
