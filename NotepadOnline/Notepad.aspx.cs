@@ -109,7 +109,7 @@ namespace NotepadOnline
             {
                 //building file path, mappath is used to get the physical path of the directory Files
                 string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileToLoad;
+                path = path + @"\" + fileToLoad + ".txt";
 
                 if (File.Exists(path))
                 {
@@ -127,6 +127,8 @@ namespace NotepadOnline
             {
                 openStatus = "Exception" + e;
             }
+
+            returnData = JsonConvert.SerializeObject(new { status = openStatus, description = fileContents });
             return returnData;
         }
 

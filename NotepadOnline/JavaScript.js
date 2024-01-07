@@ -58,7 +58,7 @@ function Save()
             if (responseData != null && response.d != null)
             {
                 response = $.parseJSON(data.d);
-                document.getElementById("SaveStatus").innerHTML = "File Status: <b>" + response.status + "</b>";
+                document.getElementById("SaveStatus").innerHTML = "File Save Status: <b>" + response.status + "</b>";
 
                 $('#SaveButton').prop('disabled', true);
 
@@ -114,7 +114,7 @@ function SaveAs(overwrite = false) {
                     }
                     else if (overwrite === true)
                     {
-                        document.getElementById("SaveStatus").innerHTML = "File save status : <b>" + "File Overwritten" + "</b>";
+                        document.getElementById("SaveStatus").innerHTML = "File Save status : <b>" + "File Overwritten" + "</b>";
 
                         //call the save function with true parameter to write data to the file
                         SaveAs(true);
@@ -128,7 +128,7 @@ function SaveAs(overwrite = false) {
                     //if the Save as button was calld with true parameter, then we dont want to display the status like this
                     if (overwrite == false)
                     { 
-                    document.getElementById("SaveStatus").innerHTML = "File save status : <b>" + response.status + "</b>";
+                    document.getElementById("SaveStatus").innerHTML = "File Save status : <b>" + response.status + "</b>";
                     }
 
                     // disabling the save button because the file has been saved
@@ -179,7 +179,6 @@ Inputs  :   None
 Outputs :   Displays the loaded file's content and status on the page.
 Returns :   None
 */
-
 function OpenFile() {
 
     // Get the select element
