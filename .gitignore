@@ -399,3 +399,10 @@ FodyWeavers.xsd
 
 #File folder to ignore 
 NotepadOnline/Files/*
+
+# Ignore minified CSS files
+NotepadOnline/Content/*.min.css
+
+# Ignore minified JavaScript files
+NotepadOnline/Scripts/*.min.js
+
