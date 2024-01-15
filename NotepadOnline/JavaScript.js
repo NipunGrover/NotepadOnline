@@ -218,6 +218,7 @@ function OpenFile() {
             }
         },
         fail: function () {
+            console.log("file  does not exist");
             document.getElementById("SaveStatus").innerHTML = "The call to the WebMethod failed!";
         }
 

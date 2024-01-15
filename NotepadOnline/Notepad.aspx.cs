@@ -1,11 +1,14 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using Newtonsoft.Json;
 using NotepdOnline.Services.NotepadOnline.Services;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Services;
 using System.Web.UI;
@@ -132,19 +135,27 @@ namespace NotepadOnline
 
             try
             {
-                //building file path, mappath is used to get the physical path of the directory Files
-                string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileToLoad + ".txt";
+                AzureBlob azureBlob = new AzureBlob();
+                string blobName = fileToLoad;
 
-                if (File.Exists(path))
+                BlobClient blobClient = azureBlob.GetBlobClient(blobName);
+
+                if ( blobClient.Exists())
                 {
-                    openStatus = "Success";
-                    fileContents = File.ReadAllText(path);
+                    BlobDownloadInfo download =  blobClient.Download();
+
+                    using (StreamReader reader = new StreamReader(download.Content))
+                    {
+                        fileContents = reader.ReadToEnd();
+                        returnData = JsonConvert.SerializeObject(new { status = "Success", description = fileContents });
+                        return returnData;
+                    }
                 }
                 else
                 {
-                    openStatus = "Failure";
-                    fileContents = "File doesn't exist";
+                    
+                    returnData = JsonConvert.SerializeObject(new { status = "Failure", description = "File doesn't exist" });
+                    return returnData;
                 }
             }
 
@@ -163,19 +174,20 @@ namespace NotepadOnline
         [WebMethod]
         public static string PopulateFileList()
         {
-            // building the path for "MyFiles" directory present in solution
-            string currentDirectory = HttpContext.Current.Server.MapPath("Files");
-            string path = Path.Combine(currentDirectory);
+            // Get the blob container client
+            string containerName = ConfigurationManager.AppSettings["BlobContainerName"];
+            AzureBlob azureBlob = new AzureBlob();
+            BlobContainerClient containerClient = azureBlob.GetContainerClient(containerName);
 
-            // getting all of the files from path
-            string[] files = Directory.GetFiles(path);
+            //// getting all of the files from path
+            //string[] files = Directory.GetFiles(path);
 
             // populating list with name of every file in path
             List<string> filesList = new List<string>();
 
-            foreach (string file in files)
+            foreach (BlobItem file in containerClient.GetBlobs())
             {
-                filesList.Add(Path.GetFileNameWithoutExtension(file));
+                 filesList.Add(file.Name);
             }
 
 

@@ -41,17 +41,28 @@ namespace NotepdOnline.Services
 
 
             //if the container does not exist, create a new container
-            private BlobContainerClient GetContainerClient(string containerName)
+            public BlobContainerClient GetContainerClient(string containerName)
             {
-                BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
-
-                if (!containerClient.Exists())
+                
+                try
                 {
-                    containerClient = blobServiceClient.CreateBlobContainer(containerName);
-                }
+                    BlobContainerClient containerClient = blobServiceClient.GetBlobContainerClient(containerName);
 
-                return containerClient;
+                    if (!containerClient.Exists())
+                    {
+                        containerClient = blobServiceClient.CreateBlobContainer(containerName);
+                    }
+
+                    return containerClient;
+                }
+                catch (Exception e)
+                {
+                    // Log the exception
+                    Console.WriteLine(e.ToString());
+                    throw;
+                }
             }
+           
         }
     }
 
