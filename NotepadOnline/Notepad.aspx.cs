@@ -93,28 +93,34 @@ namespace NotepadOnline
             string saveStatus;
 
             try
+        {
+            // Append .txt to the file name
+            fileName = fileName + ".txt";
+
+            // Get the blob client to upload the file to the blob storage
+            AzureBlob azureBlob = new AzureBlob();
+            BlobClient blobClient = azureBlob.GetBlobClient(fileName);
+
+            // Check if the blob exists
+            if (!blobClient.Exists() || overwrite == true)
             {
-                //building file path, mappath is used to get the physical path of the directory Files
-                string path = HttpContext.Current.Server.MapPath("Files");
-                path = path + @"\" + fileName + ".txt";
+                // Convert the file content to a byte array, the file content is filled in the js 
+                byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
 
+                // Create a MemoryStream with the byte array
+                using (MemoryStream stream = new MemoryStream(byteArray))
+                {
+                    // Upload the file content to the blob
+                    blobClient.Upload(stream, overwrite: overwrite);
+                }
 
-                if (!File.Exists(path) || overwrite == true)
-                {
-                    saveStatus = "Success";
-
-                    //writing content to the file
-                    File.WriteAllText(path, fileContent);
-                }
-                else if (File.Exists(path))
-                {
-                    saveStatus = "File Exists";
-                }
-                else 
-                {
-                    saveStatus = "Failure";
-                }
+                saveStatus = "Success";
             }
+            else
+            {
+                saveStatus = "File Exists";
+            }
+        }
             catch (Exception e)
             {
                 saveStatus = "Exception" + e;
