@@ -37,28 +37,19 @@ namespace NotepadOnline
 
             try
             {
-                //building file path, mappath is used to get the physical path of the directory Files
-                string path = HttpContext.Current.Server.MapPath("Files");
+                 // Append .txt to the file name
+                //fileName = fileName ??+ ".txt";
 
-                //append .txt to the file name
-                fileName = fileName + ".txt";
+                // Get the blob client to upload the file to the blob storage
+                AzureBlob azureBlob = new AzureBlob();
 
-                //costruct the path
-                path = path + @"\" + fileName;
+                BlobClient blobClient = azureBlob.GetBlobClient(fileName);
 
-                
-
-                if (File.Exists(path))
+                if (blobClient.Exists())
                 {
                     saveStatus = "Success";
 
-                    //writing content to the file
-                    File.WriteAllText(path, fileContent);
-
-                    //get the blob client to upload the file to the blob storaage client
-                    //GetBlob client will generate a container if one doesn't exist before
-                    BlobClient blobClient = azureBlob.GetBlobClient(fileName);
-
+      
                     // Convert the file content to a byte array
                     byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
 
@@ -66,7 +57,7 @@ namespace NotepadOnline
                     using (MemoryStream stream = new MemoryStream(byteArray))
                     {
                         // Upload the file content to the blob
-                        blobClient.Upload(stream);
+                        blobClient.Upload(stream, overwrite: true);
                     }
                 }
                 else
@@ -93,34 +84,34 @@ namespace NotepadOnline
             string saveStatus;
 
             try
-        {
-            // Append .txt to the file name
-            fileName = fileName + ".txt";
-
-            // Get the blob client to upload the file to the blob storage
-            AzureBlob azureBlob = new AzureBlob();
-            BlobClient blobClient = azureBlob.GetBlobClient(fileName);
-
-            // Check if the blob exists
-            if (!blobClient.Exists() || overwrite == true)
             {
-                // Convert the file content to a byte array, the file content is filled in the js 
-                byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
+                // Append .txt to the file name
+                fileName = fileName + ".txt";
 
-                // Create a MemoryStream with the byte array
-                using (MemoryStream stream = new MemoryStream(byteArray))
+                // Get the blob client to upload the file to the blob storage
+                AzureBlob azureBlob = new AzureBlob();
+                BlobClient blobClient = azureBlob.GetBlobClient(fileName);
+
+                // Check if the blob exists
+                if (!blobClient.Exists() || overwrite == true)
                 {
-                    // Upload the file content to the blob
-                    blobClient.Upload(stream, overwrite: overwrite);
-                }
+                    // Convert the file content to a byte array, the file content is filled in the js 
+                    byte[] byteArray = Encoding.UTF8.GetBytes(fileContent);
 
-                saveStatus = "Success";
+                    // Create a MemoryStream with the byte array
+                    using (MemoryStream stream = new MemoryStream(byteArray))
+                    {
+                        // Upload the file content to the blob
+                        blobClient.Upload(stream, overwrite: overwrite);
+                    }
+
+                    saveStatus = "Success";
+                }
+                else
+                {
+                    saveStatus = "File Exists";
+                }
             }
-            else
-            {
-                saveStatus = "File Exists";
-            }
-        }
             catch (Exception e)
             {
                 saveStatus = "Exception" + e;
