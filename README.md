@@ -22,3 +22,12 @@ https://github.com/NipunGrover/NotepadOnline/assets/115969949/6a2ac213-0582-42f0
 https://github.com/NipunGrover/NotepadOnline/assets/115969949/7cc0c5f4-dda0-43ea-ad2b-e9ad43cef8f3
 
 
+<h4>Save As</h4>
+<p>Save new file on cloud storage</p>
+
+
+https://github.com/NipunGrover/NotepadOnline/assets/115969949/0fee4131-8b88-4f1a-a510-c94f1d77d3d4
+
+
+
+
