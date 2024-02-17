@@ -1,6 +1,16 @@
 # NotepadOnline
 
-<p>A web based Notepad made using JS and .NET Framework. Stores .txt files on Azure Container</p>
+<p><b>A web based Notepad made using JS and .NET Framework. Stores .txt files on Azure Container</b></p>
+<br/>
+
+<h2>Compiling the Code</h2>
+  
+<p>If you want to compile the code, please search for the keywoord AzureStorageConnectionString in the web.config file and in the "connectionString="enter_your_connection string"", replace it with the actual connection string of your blob storage on azure. </p>
+<img src="https://github.com/NipunGrover/NotepadOnline/assets/115969949/97f23306-8685-4407-bd8b-d6b15b787531" />
+<br/>
+
+
+
 <br/>
 <h2 style={{paddingTop:"40px"}}>User Interface:</h2>
 <img src="https://github.com/NipunGrover/NotepadOnline/assets/115969949/7dde0e41-1fc7-412a-a146-b0b57da48b5c"/>
