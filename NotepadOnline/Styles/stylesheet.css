@@ -44,6 +44,7 @@ form label {
     width: 900px;
     height: 300px;
     resize: none;
+    border-radius: 10px;
 }
 
 #SaveButton:hover, #SaveAsButton:hover {
@@ -87,4 +88,5 @@ form label {
 #FileName {
     border-radius: 5px;
 }
+
 
